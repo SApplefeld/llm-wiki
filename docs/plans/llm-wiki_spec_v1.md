@@ -319,3 +319,14 @@ Machine facts 4 and 5 are recorded in operator-tier memory (`scott-claude-bypass
 
 Next: Section 8, the Eleos pilot (Scott, interactive), now with the two decisions above owed before a real task is registered.
 Commit Model: Commit-and-Push
+
+### Chapter 10 - 2026-08-18
+Completed: The two decisions Chapter 9 left owed are resolved, and the one that was a code change is delivered.
+
+1. **bypassPermissions stays Scott's global default; the registrar compensates.** Decided 2026-08-18: Scott keeps `permissions.defaultMode: bypassPermissions` as his global default, so finding 4 is closed in the automation rather than in his settings. `register-task.ps1` now appends `--permission-mode default` to the scheduled action, so a KB task runs under the workspace allow-list as its ceiling regardless of the account default. Verified by `-WhatIf` (the action arguments read `-p "Use the <skill> skill." --model sonnet --permission-mode default`) and a clean PowerShell parse; no task was registered. Committed and pushed (`91df4c9`). This composes with the trust prerequisite rather than replacing it: under `--permission-mode default` a trusted workspace still honors the allow-list with zero prompts (Chapter 2's probe), and an untrusted one still ignores `allow` and writes nothing. The same commit refreshed the now-historical "slash is read as prose" rationale in the registrar's header and inline comment to state current behavior.
+
+2. **PowerShell 7 installed on SCOTT-CLAUDE (7.6.5), closing finding 5 on this box.** `pwsh` now resolves, so the template's `pwsh`-based allow-list and skill invocations match and the Eleos pilot is unaffected. The template's portability residual stays open: it still assumes PS7 is present, which matters when ASR and NEO onboard onto machines whose PowerShell version is unknown. Filed to `docs/backlog.md` for the rollout.
+
+Both pre-flight decisions are now closed and the registrar is corrected, so Section 8 is a clean interactive run with no engine change owed first. Run it from a session rooted in `D:\llm-wiki`.
+Next: Section 8, the Eleos pilot (Scott, interactive)
+Commit Model: Commit-and-Push
