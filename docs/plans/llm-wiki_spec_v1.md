@@ -98,7 +98,8 @@ Two mechanics, both confirmed empirically in Chapter 1 and both silent when wron
 Acceptance: on the pilot KB, a registered task fires on schedule as the right user and processes a canary file end to end, from inbox to pushed commit, unattended.
 
 ### 8. Pilot: Eleos KB
-Model: fable (inline)
+Model: fable
+Locus: inline
 Interactive with Scott. Instantiate `eleos-kb` under the personal account using Sections 6 and 7, specialize the schema for the Eleos domain, then run real drops for a stretch: genuine documents, real ingest runs on schedule, at least one lint pass. Tune the schema template and skills against observed behavior and backport generic fixes to the engine repo. Close by writing `docs/runbook_rollout.md`: the per-entity steps for ASR and NEO (account prerequisites, host-versus-VM decision guidance, verification), executed later under their own accounts and identities.
 Acceptance: eleos-kb has ingested real sources via the scheduled task with Scott judging the wiki output pristine and usefully interlinked; a lint pass has run clean or its findings were adjudicated; runbook_rollout.md is complete enough that a fresh session under the ASR account could execute it without this conversation.
 
@@ -329,4 +330,29 @@ Completed: The two decisions Chapter 9 left owed are resolved, and the one that 
 
 Both pre-flight decisions are now closed and the registrar is corrected, so Section 8 is a clean interactive run with no engine change owed first. Run it from a session rooted in `D:\llm-wiki`.
 Next: Section 8, the Eleos pilot (Scott, interactive)
+Commit Model: Commit-and-Push
+
+### Chapter 11 - 2026-08-18
+Completed: Section 8, step 1 of the Eleos pilot: `eleos-kb` instantiated and structurally verified. Section 8 stays open; the remaining steps need Scott (trust dialog, domain vocabulary, GitHub owner, elevated registration, real documents).
+Implemented By: main session (inline, fable)
+Metrics: 0 review rounds (no engine file changed); 0 NEEDS_CONTEXT; 0 escalations; consults 0
+
+Facts established on the pilot box (SCOTT-CLAUDE, account `LocalAdmin`), all confirmed by running the command named:
+
+1. **KB location: `D:\eleos-kb`, initial commit `c6fbc2e`** ("Initialize Eleos KB knowledge base from the llm-wiki template"), 15 tracked files, clean tree, `main`. `D:\personal` (the path Chapter 2 and `instantiation.md` use as their example) does not exist on this box; every repo here sits at the `D:\` root, so the KB follows that convention. Trust is per exact path, so the path is fixed now, before anything depends on it. `Test-KbStructure.ps1 -RequireSchema -RequireSkills` exits 0 on both `pwsh` 7.6.5 and Windows PowerShell 5.1; `diff -r --exclude=.git template/ D:\eleos-kb` reports identical.
+
+2. **A first run landed at `D:\llm-wiki\eleos-kb` by my error and was removed.** Passing `D:\eleos-kb` through the Git Bash tool turned it into the drive-relative `D:eleos-kb`, which resolves against the cwd. Not a `new-kb.ps1` defect (the script did exactly what a drive-relative path asks), but worth a line in the rollout runbook: pass the destination as an absolute path from a PowerShell host, never through a POSIX shell.
+
+3. **Git identity for KB commits will be `Claude Bot <scott+claude@applefeld.com>`**, the account's global git config; the initial commit already carries it. GitHub identity is `neo-claude` over SSH (`ssh -T git@github.com` answers as neo-claude; the key `~/.ssh/id_ed25519` is passphrase-less, no agent involved), and neo-claude is a `write` collaborator on `SApplefeld/llm-wiki` (that is how this engine's pushes land). `SApplefeld` is a GitHub User account, not an org, so neo-claude cannot create a repo in that namespace; only Scott can. The SSH transport is the one to use for the KB remote: an S4U scheduled task has no Credential Manager access, and the runbook already names SSH with a passphrase-less key as the S4U-safe path.
+
+4. **This session is not elevated** (`WindowsPrincipal.IsInRole(Administrator)` is False under UAC), and `register-task.ps1` needs an elevated host, so registration is Scott's to run or this session must be relaunched elevated. No task matching `wiki|kb|ingest|lint` exists in Task Scheduler.
+
+5. **Eleos domain, as far as this machine says:** it is ASR's product line (`asr.eleos.*` core, `asr.eleos.custom.<function>` client libraries, "Eleos Core is branch-per-client", an "Eleos Integration Guide", an `EleosMcp` prototype), found in `ai-os`, `knowledge-base`, and `Neuro-Evolution-Operations` archives. That is enough for a proposed vocabulary block, not enough to write it unconfirmed; the schema specialization waits on Scott.
+
+Two operator memories were found stale during this stretch and corrected the same turn (descriptions only, the tier's sanctioned rewrite): `pwsh-absent-on-scott-claude` (PS7 is now installed) and `gh-cli-on-scott-claude` (identity is neo-claude, not SApplefeld).
+
+Decisions / Surprises: the destination-path pick and the SSH-remote recommendation above; the `Model: fable (inline)` line on Section 8 was rewritten as `Model: fable` plus `Locus: inline` per the executing-work skill.
+Review Findings: none (no engine file changed).
+Stamps: adjudicated 4, stamped 3 (`gh-cli-on-scott-claude`, `pwsh-absent-on-scott-claude`, `scott-claude-bypass-permissions-default`); skipped `claude-code-precompact-facts` (another session's read).
+Next: Section 8, steps 2 onward (Scott): trust `D:\eleos-kb`, specialize `CLAUDE.md`, create the remote, register the ingest task, drop real documents, lint, then `docs/runbook_rollout.md`.
 Commit Model: Commit-and-Push
