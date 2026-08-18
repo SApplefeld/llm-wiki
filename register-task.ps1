@@ -14,11 +14,13 @@ and that the workspace is trusted for the owning account, because Claude Code
 ignores permissions.allow in an untrusted workspace and a scheduled run there
 writes nothing while no one is watching.
 
-The prompt names the skill in prose ("Use the wiki-ingest skill.") because the
-slash-command form is read as ordinary prose in headless mode and the skill
-never runs. The model is pinned to sonnet because an unpinned headless spawn
-inherits the harness default and a too-small model does nothing while emitting
-success-shaped text.
+The prompt names the skill in prose ("Use the wiki-ingest skill."), the stable
+invocation form for a headless run. The model is pinned to sonnet because an
+unpinned headless spawn inherits the harness default and a too-small model does
+nothing while emitting success-shaped text. The permission mode is pinned to
+default so an account whose own settings default to bypassPermissions still runs
+the KB under the workspace allow-list rather than with only the deny wall, which
+is the ceiling the KB's security model depends on.
 
 With -WhatIf the task is described and nothing is registered. Otherwise the
 task is registered and read back so the operator sees what actually landed,
@@ -231,12 +233,15 @@ if (-not $isCurrentUser) {
     )
 }
 
-# 5. Build the action. The prompt names the skill in prose because the
-# slash-command form is read as prose in headless mode. --model sonnet is
-# pinned because an unpinned headless spawn inherits the harness default and a
-# too-small model does nothing while reporting success.
+# 5. Build the action. The prompt names the skill in prose, the stable form for
+# a headless run. --model sonnet is pinned because an unpinned headless spawn
+# inherits the harness default and a too-small model does nothing while
+# reporting success. --permission-mode default is pinned because an account
+# defaulting to bypassPermissions would otherwise run the KB with no allow-list
+# ceiling, leaving only the deny wall; default mode holds the run to the
+# workspace allow-list the security model relies on.
 $prompt = "Use the $skillName skill."
-$arguments = "-p `"$prompt`" --model sonnet"
+$arguments = "-p `"$prompt`" --model sonnet --permission-mode default"
 $action = New-ScheduledTaskAction -Execute $claudeExe -Argument $arguments -WorkingDirectory $kbRoot
 
 # 6. Build the trigger from the cadence. An omitted cadence defaults by
