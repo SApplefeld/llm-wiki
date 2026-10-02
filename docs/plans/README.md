@@ -11,4 +11,5 @@ This folder holds active plans only: specs that are open or in progress. A plan 
 
 ## Current
 
+- [llm-wiki_public-engine_spec_v1.md](llm-wiki_public-engine_spec_v1.md) - The engine, its template, its two scripts and its three runbooks publish to a public repository on a tag, so this repository can go private. Ready 2026-10-02, one section.
 - [llm-wiki_spec_v1.md](llm-wiki_spec_v1.md) - Build the LLM Wiki engine: KB template, schema template, ingest/lint/query skills, instantiation and automation runbooks, Eleos pilot.
