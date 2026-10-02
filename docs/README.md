@@ -20,6 +20,7 @@ This directory is the working library and project history for llm-wiki: the docu
 
 ## Active plans
 
+- [llm-wiki_public-engine_spec_v1.md](plans/llm-wiki_public-engine_spec_v1.md) - The engine, its template, its two scripts and its three runbooks publish to a public repository on a tag, so this repository can go private. Ready 2026-10-02, one section; waits on the kit repository's public marketplace plan merging.
 - [llm-wiki_spec_v1.md](plans/llm-wiki_spec_v1.md) - Build the LLM Wiki engine: KB template, schema template, ingest/lint/query skills, instantiation and automation runbooks, Eleos pilot.
 
 ## Archive
